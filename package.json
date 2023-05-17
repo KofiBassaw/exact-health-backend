@@ -1,0 +1,40 @@
+{
+  "name": "exacthealthbackendapi",
+  "version": "1.0.0",
+  "description": "exact health background api",
+  "main": "server.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server",
+    "exacthealthapi": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/KofiBassaw/exact-health-backend.git"
+  },
+  "keywords": [
+    "health"
+  ],
+  "author": "Kofi Bassaw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KofiBassaw/exact-health-backend/issues"
+  },
+  "homepage": "https://github.com/KofiBassaw/exact-health-backend#readme"
+  ,"dependencies": {
+    "axios": "^1.4.0",
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.1.5",
+    "joi": "^17.9.2",
+    "node-device-detector": "^2.0.13",
+    "pg": "^8.10.0",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1",
+    "xss-clean": "^0.1.1"
+  }
+  , "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.22"
+  }
+}
