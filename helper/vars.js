@@ -6,7 +6,8 @@ let myVars = {
     UNKOWN_ERROR:"UNKOWN ERROR",
     UNABLETOPROCESSREQUEST : "unable to process request, please try again",
     REQUESTDONE : "request done",
-    INVALID: "invalid request"
+    INVALID: "invalid request",
+    APPLICATION_NAME: "Exact Health"
 }
 
 let ProcessStatus = {
@@ -38,6 +39,14 @@ let ACTIVITYIDS = {
     CONTRIBUTION_DESTINATION_TYPE: "1d6c3ed2-368f-4232-80be-3ff7956b0f39"
 }
 
+let RESPONSE_CODES = {
+    FAILED :0,
+    SUCCESS:1,
+    SESSION_EXPIRED:10,
+    INVALID_REQUEST: 100
+}
+
+
 
 
 module.exports = {
@@ -45,6 +54,6 @@ module.exports = {
     ProcessStatus,
     staticString,
     ActivityType,
-    ACTIVITYIDS
+    ACTIVITYIDS,
+    RESPONSE_CODES
 }
-

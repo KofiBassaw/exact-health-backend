@@ -6,12 +6,24 @@ const {
    TestController
 } = require("../controllers/api");
 
+const {
+   RegisterInitiateController,
+   RegisterConfirmOtpController
+} = require("../controllers/userController");
+
+const { CheckAgent } = require("../middleware/loginMiddleware");
+
 
 
  
 
 //test routes link
-router.route("/testapi").get(TestController);
+router.route("/testapi").get(CheckAgent,TestController);
+
+
+//user functions
+router.route("/user/initiateRegistration").post(RegisterInitiateController);
+router.route("/user/confirmOtp").post(RegisterConfirmOtpController);
 
 
 
