@@ -46,6 +46,14 @@ let RESPONSE_CODES = {
     INVALID_REQUEST: 100
 }
 
+let REGISTRATION_STATUS = {
+    PENDING_APPLICATION :0,
+    PENDING_REVIEW:1,
+    PENDING_PROFILE:2,
+    COMPLETED: 3,
+    DECLINED: 10
+}
+
 
 
 
@@ -55,5 +63,9 @@ module.exports = {
     staticString,
     ActivityType,
     ACTIVITYIDS,
-    RESPONSE_CODES
+    RESPONSE_CODES,
+    REGISTRATION_STATUS
 }
+
+
+

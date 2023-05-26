@@ -1,11 +1,23 @@
 const { logger } = require("../logs/winston");
 const otpGenerator = require('otp-generator');
-const {myVars,ProcessStatus, RESPONSE_CODES } = require("../helper/vars");
+const {RESPONSE_CODES } = require("../helper/vars");
 const {createHash} = require('crypto');
+const GlobalModel = require("../model/GlobalModel");
 
 let ussd = {};
 
-ussd.sendResponse = (res, code,message, data) => {
+ussd.sendResponse = (res, code,message, data, session) => {
+
+         if(session)
+         {
+          //there is a session update last update time of session
+          let session_id = session.session_id;
+          delete session["session"];
+          delete session["cordinates"];
+
+          session.last_updated = new Date();
+          GlobalModel.Update(session,'user_session','session_id',session_id);
+         }
         data?.status == RESPONSE_CODES.FAILED ? logger.error(message) : logger.info(message)
         res.status(code).json(data)
     };
@@ -80,6 +92,20 @@ ussd.sendResponse = (res, code,message, data) => {
      
       phone = phone.replace(/ /g, '');
         return phone; 
+     };
+
+
+
+
+
+    ussd.formateUser = (userReg) => {
+
+      delete userReg["id"];
+      delete userReg["user_id"];
+      delete userReg["password"];
+      delete userReg["cloudinary_data"];
+       
+        return userReg; 
      };
 
 

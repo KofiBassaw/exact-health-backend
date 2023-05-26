@@ -1,4 +1,4 @@
-const pool = require("../config/db");
+const {pool} = require("../config/db");
 const { prepareColumns } = require("../helper/globals");
 const { logger } = require("../logs/winston");
 

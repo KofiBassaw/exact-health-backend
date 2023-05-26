@@ -1,10 +1,11 @@
 
-const pool = require("../config/db");
+const {pool} = require("../config/db");
 const { prepareColumns } = require("../helper/globals");
 const { logger } = require("../logs/winston");
 
 let ussd = {};
 ussd.Create = (session, latitude, longitude) => {
+
     let columns = Object.keys(session)
     let params = Object.values(session)
     let fields = columns.toString()
@@ -27,4 +28,24 @@ ussd.Create = (session, latitude, longitude) => {
     });
 };
 
+
+
+ussd.activeSession = (sessionID) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM user_session WHERE session_id = $1 AND  (EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - last_updated)) / 60) <= $2 AND status = $3`, [sessionID,30,1], (err, results) => {
+            if (err) {
+                logger.error(err);
+                return reject(err);
+            }
+
+            return resolve(results);
+        });
+    });
+};
+
+
+
+
 module.exports = ussd
+
+

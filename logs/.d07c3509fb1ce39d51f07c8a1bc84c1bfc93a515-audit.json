@@ -19,6 +19,31 @@
             "date": 1684667587013,
             "name": "logs/rotate-2023-05-21.log",
             "hash": "d2033aea044ddc659fd30adcab8e785abb3fb0fcceb07fdc074ffdb511c65aa3"
+        },
+        {
+            "date": 1684762201642,
+            "name": "logs/rotate-2023-05-22.log",
+            "hash": "056fa796dd93dae492819a8e238c2803b4dab918af98b19e0da467c5b9219477"
+        },
+        {
+            "date": 1684847124975,
+            "name": "logs/rotate-2023-05-23.log",
+            "hash": "bf3b0e1acc23ff0046b3b884e6a44ef7b229dc2ac94f06dad1a426c7ed31b967"
+        },
+        {
+            "date": 1684931546633,
+            "name": "logs/rotate-2023-05-24.log",
+            "hash": "e7b403e4ae74ae48b10cac4ec9ced47acf46c7491b16445e5c1720c4714eaf7d"
+        },
+        {
+            "date": 1685014996623,
+            "name": "logs/rotate-2023-05-25.log",
+            "hash": "9e292713df7bb2918c08d4b23235f20323c3bb2cb52d3d3a58e79413580fcbe8"
+        },
+        {
+            "date": 1685081213348,
+            "name": "logs/rotate-2023-05-26.log",
+            "hash": "7bf7ee1676258875e01e74b424e06035fe9fab7daa347489d37816a983be0e3c"
         }
     ],
     "hashType": "sha256"
