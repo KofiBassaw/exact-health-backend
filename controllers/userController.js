@@ -14,95 +14,107 @@ const fs = require('fs');
 
 exports.RegisterInitiateController = asynHandler(async (req, res, next) => {
 
-    let userData = req.body;
-    let userAgentObj = req.headers;
-    let {useragent} = userAgentObj;
-
-    let userAgent = JSON.parse(useragent); 
-
-
-    let phoneNum =  UtilityHelper.formatPhone(userData.phone_number);
-
-    userData.phone_number = phoneNum;
-
-    //console.log("raw password "+ userData.password);
-
-    let rawPassword = userData.password;
-    let passwordHarsh  = UtilityHelper.sha256Encrypt(rawPassword);
-   
-    console.log("encrypted password: "+ passwordHarsh);
-    userData.password = passwordHarsh;
-
-
-
-    let oldUser = await GlobalModel.Find('phone_number',userData.phone_number,'user_profile');
-
-    if(oldUser.rowCount >= 1)
-    {
-        //user with phone number exist
-        let resp = {
-            status : RESPONSE_CODES.FAILED,
-            message : "phone number already exist, consider loggin in"
-        };
-
-        return UtilityHelper.sendResponse(resp, 200, resp.message, resp)
-    }
-
-    let oldUser2 = await GlobalModel.Find('email',userData.email,'user_profile');
-
-
-    if(oldUser2.rowCount >= 1)
-    {
-        //user with email exist
-        var resp = {
-            status : RESPONSE_CODES.FAILED,
-            message : "phone number already exist, consider loggin in"
-        };
-        return UtilityHelper.sendResponse(res, 200, resp.message, resp)
-
-    }
-
-
-    let otp = UtilityHelper.generateOTP(4);
-    otpHash = UtilityHelper.sha256Encrypt(otp);
-
-    let  smsMessage = "Your One-Time-Password is "+otp+". If you have not initiated request on the exact help app, kindly ignore this message, or contact our Contact Centre toll free on XXXXXXXXXX. Thank you";
+    try{
+        let userData = req.body;
+        let userAgentObj = req.headers;
+        let {useragent} = userAgentObj;
     
-    var extraData = {
-        user: userData,
-        userAgent : userAgent
-    }
-
-    let password_res = {
-        reset_password_code : otpHash ,
-        extra_data : extraData
-    };
-
-    let resetPassResp = await GlobalModel.Create(password_res, 'password_reset', '');
-
-    if(resetPassResp.rowCount < 1)
-    {
-        logger.error("Unable create temporal user");
+        let userAgent = JSON.parse(useragent); 
+    
+    
+        let phoneNum =  UtilityHelper.formatPhone(userData.phone_number);
+    
+        userData.phone_number = phoneNum;
+    
+        //console.log("raw password "+ userData.password);
+    
+        let rawPassword = userData.password;
+        let passwordHarsh  = UtilityHelper.sha256Encrypt(rawPassword);
+       
+        console.log("encrypted password: "+ passwordHarsh);
+        userData.password = passwordHarsh;
+    
+    
+    
+        let oldUser = await GlobalModel.Find('phone_number',userData.phone_number,'user_profile');
+    
+        if(oldUser.rowCount >= 1)
+        {
+            //user with phone number exist
+            let resp = {
+                status : RESPONSE_CODES.FAILED,
+                message : "phone number already exist, consider loggin in"
+            };
+    
+            return UtilityHelper.sendResponse(resp, 200, resp.message, resp)
+        }
+    
+        let oldUser2 = await GlobalModel.Find('email',userData.email,'user_profile');
+    
+    
+        if(oldUser2.rowCount >= 1)
+        {
+            //user with email exist
+            var resp = {
+                status : RESPONSE_CODES.FAILED,
+                message : "phone number already exist, consider loggin in"
+            };
+            return UtilityHelper.sendResponse(res, 200, resp.message, resp)
+    
+        }
+    
+    
+        let otp = UtilityHelper.generateOTP(4);
+        otpHash = UtilityHelper.sha256Encrypt(otp);
+    
+        let  smsMessage = "Your One-Time-Password is "+otp+". If you have not initiated request on the exact help app, kindly ignore this message, or contact our Contact Centre toll free on XXXXXXXXXX. Thank you";
+        
+        var extraData = {
+            user: userData,
+            userAgent : userAgent
+        }
+    
+        let password_res = {
+            reset_password_code : otpHash ,
+            extra_data : extraData
+        };
+    
+        let resetPassResp = await GlobalModel.Create(password_res, 'password_reset', '');
+    
+        if(resetPassResp.rowCount < 1)
+        {
+            logger.error("Unable create temporal user");
+            var resp = {
+                status : RESPONSE_CODES.FAILED,
+                message : "Unable to create temporal user"
+            };
+            return UtilityHelper.sendResponse(res, 200, resp.message, resp)
+        }
+    
+    
+        //ormit await function to execute request at the background
+        sendSMS(smsMessage,myVars.APPLICATION_NAME,userData.phone_number);
+    
+    
+        resetPassObj = resetPassResp.rows[0];
+    
         var resp = {
-            status : RESPONSE_CODES.FAILED,
-            message : "Unable to create temporal user"
+            status : RESPONSE_CODES.SUCCESS,
+            message : "Kindly provide the OTP sent to your phone number to complete your registeration",
+            data : resetPassObj.reset_id
         };
         return UtilityHelper.sendResponse(res, 200, resp.message, resp)
+    }catch(ex){
+
+        logger.error("failed to create user");
+        var resp = {
+            status : RESPONSE_CODES.FAILED,
+            message : "Unkwon error"
+        };
+        console.error('Error creating user', ex);
+        console.log(ex);
+        return UtilityHelper.sendResponse(res, 200, resp.message, resp)
     }
-
-
-    //ormit await function to execute request at the background
-    sendSMS(smsMessage,myVars.APPLICATION_NAME,userData.phone_number);
-
-
-    resetPassObj = resetPassResp.rows[0];
-
-    var resp = {
-        status : RESPONSE_CODES.SUCCESS,
-        message : "Kindly provide the OTP sent to your phone number to complete your registeration",
-        data : resetPassObj.reset_id
-    };
-    return UtilityHelper.sendResponse(res, 200, resp.message, resp)
 
 })
 
