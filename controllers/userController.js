@@ -620,6 +620,58 @@ exports.CompleteUserApplicationSeetUpControler = asynHandler(async (req, res, ne
 
 
 
+
+
+
+
+
+exports.ReturnToApplicationControler = asynHandler(async (req, res, next) => {
+
+    let session = req.session;
+    let user = req.user;
+     
+    let user_id = user.user_id;
+
+    let statusUser = {
+        registration_status : REGISTRATION_STATUS.PENDING_APPLICATION
+    }
+        
+
+    let updateResp = await GlobalModel.Update(statusUser,'user_profile','user_id',user_id);
+
+
+    if(updateResp.rowCount < 1)
+    {
+        //failed to update user details
+        var resp = {
+            status : RESPONSE_CODES.FAILED,
+            message : "Unable to change user application status"
+        };
+        return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+    }
+
+    let userReg = UtilityHelper.formateUser( updateResp.rows[0]);
+ 
+
+      //failed to update user details
+      var resp = {
+        status : RESPONSE_CODES.SUCCESS,
+        message : "Success",
+        data: userReg
+    };
+
+
+   return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+
+})
+
+
+
+
+
+
+
+
 exports.UpdateProfileControler = asynHandler(async (req, res, next) => {
 
     let session = req.session;
