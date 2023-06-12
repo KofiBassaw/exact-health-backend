@@ -56,6 +56,14 @@ let REGISTRATION_STATUS = {
 
 
 
+let TASK_STATUS = {
+    ACTIVE:1,
+    CLOSED:2,
+    DELETED: 10
+}
+
+
+
 
 module.exports = {
     myVars,
@@ -64,7 +72,8 @@ module.exports = {
     ActivityType,
     ACTIVITYIDS,
     RESPONSE_CODES,
-    REGISTRATION_STATUS
+    REGISTRATION_STATUS,
+    TASK_STATUS
 }
 
 

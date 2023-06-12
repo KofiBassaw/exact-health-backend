@@ -23,6 +23,23 @@ const {
    ReturnToApplicationControler
 } = require("../controllers/userController");
 
+
+const {
+   AppointmentCurrentAppointmentController,
+   AppointmentAddDiagnosisController,
+   AppointmentRecordsController,
+   AppointmentLabParamtersController,
+   AppointmentLabRequestController,
+   AppointmentAddPrescriptionController,
+   AppointmentAddTaskController,
+   AppointmentAddTaskActivityController,
+   AppointmentUpcomingController
+} = require("../controllers/appointmentController");
+
+
+
+
+
 const { CheckAgent } = require("../middleware/requestMiddleware");
 const { CheckLoginAgent } = require("../middleware/loginMiddleware");
 
@@ -50,7 +67,20 @@ router.route("/user/return-application").get(CheckAgent,ReturnToApplicationContr
 
 
 
-//
+//appointment functions
+router.route("/appointment/current").get(CheckAgent,AppointmentCurrentAppointmentController);
+router.route("/appointment/upcoming").get(CheckAgent,AppointmentUpcomingController);
+router.route("/appointment/diagnosis").post(CheckAgent,AppointmentAddDiagnosisController);
+router.route("/appointment/records/:appointment_id").get(CheckAgent,AppointmentRecordsController);
+router.route("/appointment/lab-paramters").get(CheckAgent,AppointmentLabParamtersController);
+router.route("/appointment/lab-order").post(CheckAgent,AppointmentLabRequestController);
+router.route("/appointment/medication").post(CheckAgent,AppointmentAddPrescriptionController);
+router.route("/appointment/task").post(CheckAgent,AppointmentAddTaskController);
+router.route("/appointment/task-activity").post(CheckAgent,AppointmentAddTaskActivityController);
+
+
+
+
 
 
 module.exports = router;
