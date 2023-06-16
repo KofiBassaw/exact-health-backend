@@ -33,7 +33,8 @@ const {
    AppointmentAddPrescriptionController,
    AppointmentAddTaskController,
    AppointmentAddTaskActivityController,
-   AppointmentUpcomingController
+   AppointmentUpcomingController,
+   AppointmentAddReferralController
 } = require("../controllers/appointmentController");
 
 
@@ -77,7 +78,7 @@ router.route("/appointment/lab-order").post(CheckAgent,AppointmentLabRequestCont
 router.route("/appointment/medication").post(CheckAgent,AppointmentAddPrescriptionController);
 router.route("/appointment/task").post(CheckAgent,AppointmentAddTaskController);
 router.route("/appointment/task-activity").post(CheckAgent,AppointmentAddTaskActivityController);
-
+router.route("/appointment/referral").post(CheckAgent,AppointmentAddReferralController);
 
 
 

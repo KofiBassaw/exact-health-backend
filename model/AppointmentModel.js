@@ -190,4 +190,31 @@ ussd.addBulkLabParamter = async (labParameter) => {
 
 
 
+
+ussd.referrals = (appointment_id) => {
+  return new Promise((resolve, reject) => {
+
+    
+   const query = 'SELECT ar.*, bs.name as service_name FROM appointment_referral ar left join business_branch_services bs  on ar.facility_id = bs.services_id where ar.status = $1 and ar.appointment_id = $2';
+
+// Execute the query with the provided query parameters
+db.any(query, [1, appointment_id])
+.then(data => {
+  // Handle the query results
+  console.log(data);
+  return resolve(data);
+})
+.catch(error => {
+  // Handle any errors
+  console.error(error);
+  return reject(error);
+});
+
+  });
+};
+
+
+
+
+
 module.exports = ussd

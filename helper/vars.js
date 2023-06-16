@@ -64,6 +64,13 @@ let TASK_STATUS = {
 
 
 
+let REFERRAL_TYPE = {
+    HOSPITAL : "HOSPITAL",
+    LAB : "LAB",
+    PHARMACY : "PHARMACY"
+}
+
+
 
 module.exports = {
     myVars,
@@ -73,7 +80,8 @@ module.exports = {
     ACTIVITYIDS,
     RESPONSE_CODES,
     REGISTRATION_STATUS,
-    TASK_STATUS
+    TASK_STATUS,
+    REFERRAL_TYPE
 }
 
 

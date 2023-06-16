@@ -571,6 +571,88 @@ exports.AppointmentAddTaskActivityController = asynHandler(async (req, res, next
 
 
 
+exports.AppointmentAddReferralController = asynHandler(async (req, res, next) => {
+
+    let {session,user} = req;
+    let referral  = req.body;
+    
+    let professionResp = await GlobalModel.Find('appointment_id',referral.appointment_id,'appointment')
+
+    if(professionResp.rows <= 0)
+    {
+        var resp = {
+            status : RESPONSE_CODES.FAILED,
+            message : "Invalid appointment ID"
+        };
+    
+        return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+    }
+
+    let appointment = professionResp.rows[0];
+    var SavedReferral = null;
+
+
+
+    if(referral.referral_id)
+    {
+        //update the diagnosis details
+        let referral_id = referral.referral_id;
+        delete referral['referral_id'];
+
+
+        let updateResp = await GlobalModel.Update(referral,'appointment_referral','referral_id',referral_id);
+
+
+        if(updateResp.rowCount < 1)
+        {
+            //failed to update user details
+            var resp = {
+                status : RESPONSE_CODES.FAILED,
+                message : "Unable to update referral details"
+            };
+            return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+        }
+
+        SavedReferral = updateResp.rows[0];
+    }else{
+        //new diagnosis add
+        referral.patient_id = appointment.patient_id;
+        referral.medical_professional_id = user.user_id;
+        referral.user_id = appointment.user_id;
+
+        let newPersResponse = await GlobalModel.Create(referral,'appointment_referral','');
+
+        if(newPersResponse.rowCount < 1)
+        {
+            //request failed to save
+        var resp = {
+            status : RESPONSE_CODES.FAILED,
+            message : "Unable to save referral details"
+        };
+    
+        return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+        }
+    
+        SavedReferral = newPersResponse.rows[0];
+
+    }
+
+
+
+   
+
+   var resp = {
+       status : RESPONSE_CODES.SUCCESS,
+       message : "Success",
+       data : SavedReferral
+   };
+   
+
+   return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+
+})
+
+
 
 
 
@@ -595,13 +677,16 @@ exports.AppointmentRecordsController = asynHandler(async (req, res, next) => {
 
     let tasks = await AppointmentModel.tasks(appointment_id);
 
+    let referrals = await AppointmentModel.referrals(appointment_id);
+
 
     
 
     var recData = {
         dignosis : diagnosisResp,
         labOders : labOders,
-        medications: medications
+        medications: medications,
+        referrals: referrals
     };
 
     console.log(recData)
