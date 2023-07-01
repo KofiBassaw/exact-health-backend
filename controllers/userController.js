@@ -755,6 +755,81 @@ exports.UpdateProfileControler = asynHandler(async (req, res, next) => {
 
 
 
+
+
+
+
+
+
+
+
+
+exports.Schedules = asynHandler(async (req, res, next) => {
+
+    let session = req.session;
+    let user = req.user;
+    
+    let user_id = user.user_id;
+
+
+
+
+    scheduleRes = await UserModel.schedules(user_id);
+    var scheduleRes = scheduleRes.rows; 
+    
+
+
+
+   
+  
+
+      var resp = {
+        status : RESPONSE_CODES.SUCCESS,
+        message : "Success",
+        data: scheduleRes
+    };
+   return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+
+})
+
+
+exports.UserProfileControler = asynHandler(async (req, res, next) => {
+
+    let session = req.session;
+    let user = req.user;
+    
+    let user_id = user.user_id;
+
+
+    let userReg = user;
+    
+
+   
+    delete userReg["id"];
+    delete userReg["user_id"];
+    delete userReg["password"];
+
+      //failed to update user details
+
+  
+
+      var resp = {
+        status : RESPONSE_CODES.SUCCESS,
+        message : "Success",
+        data: userReg
+    };
+   return UtilityHelper.sendResponse(res, 200, resp.message, resp,session)
+
+})
+
+
+
+
+
+
+
+
+
 exports.UploadProfieleImage = asynHandler(async (req, res, next) => {
 
     let session = req.session;

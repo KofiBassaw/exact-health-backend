@@ -139,6 +139,23 @@ ussd.bulkAddUserSchedules = async (schedules, userID) => {
 
 
 
+ussd.schedules = (userID) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT id, schedule_id, date_start, date_end, user_id, status, date_added, recurring, day_of_the_week
+        FROM  user_schedule
+        where date_end >= CURRENT_TIMESTAMP and user_id = $1 and status = $2`, [userID,1], (err, results) => {
+            if (err) {
+                logger.error(err);
+                return reject(err);
+            }
+
+            return resolve(results);
+        });
+    });
+};
+
+
+
 
 
 module.exports = ussd

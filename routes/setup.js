@@ -20,7 +20,9 @@ const {
    CompleteUserApplicationSeetUpControler,
    UpdateProfileControler,
    UploadProfieleImage,
-   ReturnToApplicationControler
+   ReturnToApplicationControler,
+   UserProfileControler,
+   Schedules
 } = require("../controllers/userController");
 
 
@@ -64,6 +66,9 @@ router.route("/user/complete-setup").get(CheckAgent,CompleteUserApplicationSeetU
 router.route("/user/update-profile").post(CheckAgent,UpdateProfileControler);
 router.route("/user/upload-image").post(CheckAgent,upload.single('file'),UploadProfieleImage);
 router.route("/user/return-application").get(CheckAgent,ReturnToApplicationControler);
+router.route("/user/profile").get(CheckAgent,UserProfileControler);
+router.route("/user/schedules").get(CheckAgent,Schedules);
+
 
 
 
