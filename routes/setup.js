@@ -26,6 +26,20 @@ const {
 } = require("../controllers/userController");
 
 
+
+
+
+const {
+   AdminLoginController,
+   UserAdminAll,
+   UserAdminPendingReview,
+   AdminApplicationDataController,
+   AdminUserReviewController
+} = require("../controllersAdmin/userController");
+
+
+
+
 const {
    AppointmentCurrentAppointmentController,
    AppointmentAddDiagnosisController,
@@ -50,6 +64,17 @@ const { CheckLoginAgent } = require("../middleware/loginMiddleware");
 
 //test routes link
 router.route("/testapi").get(CheckAgent,TestController);
+
+
+//admin user functions
+router.route("/admin/user/login").post(CheckLoginAgent,AdminLoginController);
+router.route("/admin/user/all").get(CheckAgent,UserAdminAll);
+router.route("/admin/user/pendingReview").get(CheckAgent,UserAdminPendingReview);
+router.route("/admin/user/application-data/:user_id").get(CheckAgent,AdminApplicationDataController);
+router.route("/admin/user/review").post(CheckAgent,AdminUserReviewController);
+
+
+
 
 
 //user functions

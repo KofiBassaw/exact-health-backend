@@ -71,6 +71,10 @@ let REFERRAL_TYPE = {
 }
 
 
+let USER_TYPE = {
+    PATIENT :"ba58c74d-7be4-4fc3-b0b1-e4cf69af5de9"
+}
+
 
 module.exports = {
     myVars,
@@ -81,7 +85,8 @@ module.exports = {
     RESPONSE_CODES,
     REGISTRATION_STATUS,
     TASK_STATUS,
-    REFERRAL_TYPE
+    REFERRAL_TYPE,
+    USER_TYPE
 }
 
 
